@@ -3,15 +3,20 @@ class Game {
   limitMapY = 33;  
   beforePosition = "";
   allPeaces = []
-  constructor() {
+  constructor(numberPlayers) {
+    this.numberPlayers = numberPlayers;
   }
 
   onInit() {
     this.createBoard()
-    this.createPeace(1, "blue", `<img src="./img/peao/peao1.png">`, "id-25-25", "id-0-0")
-    this.createPeace(2, "black", `<img src="./img/peao/peao2.png">`, "id-25-25", "id-0-0")
-    this.createPeace(3, "blue", `<img src="./img/peao/peao3.png">`, "id-25-25", "id-0-0")
-    this.createPeace(4, "blue", `<img src="./img/peao/peao4.png">`, "id-25-25", "id-0-0")
+    this.createPeace(1, "blue", `<img src="./img/peao/peao1.png">`, "id-25-25", "", "")
+    this.createPeace(2, "black", `<img src="./img/peao/peao2.png">`, "id-25-25", "", "")
+    this.createPeace(3, "purple", `<img src="./img/peao/peao3.png">`, "id-25-25", "", "")
+    this.createPeace(4, "red", `<img src="./img/peao/peao4.png">`, "id-25-25", "", "")
+    this.createPeace(5, "pink", `<img src="./img/peao/peao5.png">`, "id-25-25", "", "")
+    this.createPeace(6, "blue", `<img src="./img/peao/peao6.png">`, "id-25-25", "", "")
+    this.createPeace(7, "blue", `<img src="./img/peao/peao7.png">`, "id-25-25", "", "")
+    this.createPeace(8, "blue", `<img src="./img/peao/peao8.png">`, "id-25-25", "", "")
     console.log(this.allPeaces)
   }
 
@@ -32,75 +37,71 @@ class Game {
 
   createPeace(id, color, image, initialPosition, currentPosition, beforePosition) {
     let peace = {}
-    peace.id = id
+    peace.id = this.allPeaces.length + 1
     peace.color = color
     peace.image = image
     peace.initialPosition = initialPosition
     peace.currentPosition	 = currentPosition
     peace.beforePosition = beforePosition
-    
-    this.allPeaces.push(peace)
-    console.log(peace)
+    if (peace.id <= this.numberPlayers){
+      this.allPeaces.push(peace)
+    }
+      
   }
 
-  movePeace(coordenada, id) {
+  movePeace(id, coordenada) {
     let move = document.querySelector(`#${coordenada}`);
+    
+        let beforePosition = this.allPeaces[id].beforePosition
 
-    for (let i = 0; i < this.allPeaces.length; i++){
-      if (this.allPeaces[i].id == id) {
-
-        if (this.beforePosition !== "") {
-          let moveBefore = document.querySelector(`#${this.beforePosition}`);
+        if (beforePosition !== "") {
+          let moveBefore = document.querySelector(`#${beforePosition}`);
           moveBefore.innerHTML = `<img src="./img/azulejo.png">`;
         }
         
         if (move.innerHTML == `<img src="./img/azulejo.png">`){
-          move.innerHTML = this.allPeaces[i].image;
+          move.innerHTML = this.allPeaces[id].image;
           console.log("foi");
         } else {
-          let moveBefore = document.querySelector(`#${this.beforePosition}`);
-          moveBefore.innerHTML = this.allPeaces[i].image;           
+          let moveBefore = document.querySelector(`#${beforePosition}`);
+          moveBefore.innerHTML = this.allPeaces[id].image;           
           console.log("tem gente")
         }
         
-        this.allPeaces[i].beforePosition = coordenada;
-      }
-    }
-    
-    
+        this.allPeaces[id].beforePosition = coordenada;     
   }
 
-  walkPeace(string) {
+  walkPeace(idPeace, string) {
+    let id = idPeace - 1
     let arrayStrings = string.split("-");
     let x = Number(arrayStrings[1]);
     let y = Number(arrayStrings[2]);
-    
     let coordenada = "id" + "-" + x + "-" + y;
     
-    if (coordenada == this.beforePosition) {
+    if (coordenada == this.allPeaces[id].beforePosition) {
       console.log("msm posicao");
     } else if (x < 51 && y < 33) {
-      this.movePeace(coordenada);
+      this.movePeace(id, coordenada);
       
     } else {
       console.log("código errado");
     }
   }
-
-  setUpPosition() {
-
-  }
 }
 
-
-// const blackPeace = new Game(2, "black", `<img src="./img/peao/peao2.png">`, "id-15-15");
-// const redPeace = new Peace(4, "red", `<img src="./img/peao/peao4.png">`, "id-10-10");
-// const bluePeace = new Peace(1, "blue", `<img src="./img/peao/peao1.png">`, "id-25-25");
-const game = new Game()
+const game = new Game(5)
 game.onInit()
-game.movePeace("id-10-10", 1)
-game.movePeace("id-30-30", 2)
-game.movePeace("id-0-0", 4)
+game.walkPeace(1, "id-10-10")
+game.walkPeace(1, "id-0-0")
+game.walkPeace(1, "id-0-0")
+game.walkPeace(2, "id-1-0")
+game.walkPeace(3, "id-2-0")
+game.walkPeace(4, "id-3-0")
+game.walkPeace(5, "id-4-0")
+game.walkPeace(5, "id-3-0")
+
+
+
 
 
 
