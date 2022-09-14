@@ -18,13 +18,15 @@ body {
 li {
     height: 24px;
 }
+ul{
+    padding: 0;
+}
 
 .suspect-file {
     background-color: white;
     width: 17rem;
     height: 50rem;
     position: absolute;
-    left: 100rem;
     top: 7.5rem;
     padding-top: 2rem;
 }
@@ -38,7 +40,6 @@ li {
 .checkbox {
     display: flex;
     float: right;
-    margin: 0.5rem 3rem 0rem 9rem;
     gap: 5rem;   
 }
 
