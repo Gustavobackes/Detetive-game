@@ -25,19 +25,23 @@ class Game {
                 li.innerHTML = `<img src="../img/azulejo.png">`;
                 li.setAttribute("id", `id-${i}-${j}`);
                 ul.appendChild(li);
-                document.querySelector("#board").appendChild(ul);
+                const openUl = document.querySelector("#board");
+                if (openUl !== null) {
+                    openUl.appendChild(ul);
+                }
             }
         }
     }
-    createPeace(id, color, image, initialPosition, currentPosition, beforePosition) {
-        let peace = {};
-        peace.id = this.allPeaces.length + 1;
-        peace.color = color;
-        peace.image = image;
-        peace.initialPosition = initialPosition;
-        peace.currentPosition = currentPosition;
-        peace.beforePosition = beforePosition;
-        if (peace.id <= this.numberPlayers) {
+    createPeace(id = 0, color, image, initialPosition, turnPlay, beforePosition) {
+        let peace = {
+            id: id++,
+            color: color,
+            image: image,
+            initialPosition: initialPosition,
+            turnPlay: turnPlay,
+            beforePosition: beforePosition,
+        };
+        if (id <= this.numberPlayers) {
             this.allPeaces.push(peace);
             console.log(peace);
         }
@@ -57,9 +61,9 @@ class Game {
         let beforePosition = this.allPeaces[id].beforePosition;
         if (beforePosition !== "") {
             let moveBefore = document.querySelector(`#${beforePosition}`);
-            moveBefore.innerHTML = `<img src="./img/azulejo.png">`;
+            moveBefore.innerHTML = `<img src="../img/azulejo.png">`;
         }
-        if (move.innerHTML == `<img src="./img/azulejo.png">`) {
+        if (move.innerHTML == `<img src="../img/azulejo.png">`) {
             move.innerHTML = this.allPeaces[id].image;
             console.log("foi");
         }
