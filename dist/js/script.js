@@ -8,14 +8,14 @@ class Game {
     }
     onInit() {
         this.createBoard();
-        this.createPeace(null, "blue", `<img src="../img/peao/peao1.png">`, "id-1-10", "", "");
-        this.createPeace(null, "black", `<img src="../img/peao/peao2.png">`, "id-2-10", "", "");
-        this.createPeace(null, "purple", `<img src="../img/peao/peao3.png">`, "id-3-10", "", "");
-        this.createPeace(null, "red", `<img src="../img/peao/peao4.png">`, "id-4-10", "", "");
-        this.createPeace(null, "pink", `<img src="../img/peao/peao5.png">`, "id-5-10", "", "");
-        this.createPeace(null, "yellow", `<img src="../img/peao/peao6.png">`, "id-6-10", "", "");
-        this.createPeace(null, "green", `<img src="../img/peao/peao7.png">`, "id-7-10", "", "");
-        this.createPeace(null, "orange", `<img src="../img/peao/peao8.png">`, "id-8-10", "", "");
+        this.createPeace(0, "blue", `<img src="../img/peao/peao1.png">`, "id-1-10", "", "");
+        this.createPeace(0, "black", `<img src="../img/peao/peao2.png">`, "id-2-10", "", "");
+        this.createPeace(0, "purple", `<img src="../img/peao/peao3.png">`, "id-3-10", "", "");
+        this.createPeace(0, "red", `<img src="../img/peao/peao4.png">`, "id-4-10", "", "");
+        this.createPeace(0, "pink", `<img src="../img/peao/peao5.png">`, "id-5-10", "", "");
+        this.createPeace(0, "yellow", `<img src="../img/peao/peao6.png">`, "id-6-10", "", "");
+        this.createPeace(0, "green", `<img src="../img/peao/peao7.png">`, "id-7-10", "", "");
+        this.createPeace(0, "orange", `<img src="../img/peao/peao8.png">`, "id-8-10", "", "");
     }
     createBoard() {
         for (let i = 0; i < this.limitMapX; i++) {
@@ -26,13 +26,11 @@ class Game {
                 li.setAttribute("id", `id-${i}-${j}`);
                 ul.appendChild(li);
                 const openUl = document.querySelector("#board");
-                if (openUl !== null) {
-                    openUl.appendChild(ul);
-                }
+                openUl.appendChild(ul);
             }
         }
     }
-    createPeace(id = 0, color, image, initialPosition, turnPlay, beforePosition) {
+    createPeace(id, color, image, initialPosition, turnPlay, beforePosition) {
         let peace = {
             id: id++,
             color: color,
@@ -74,16 +72,43 @@ class Game {
         }
         this.allPeaces[id].beforePosition = coordenada;
     }
-    walkPeace(idPeace, string) {
+    rollDice() {
+        let min = Math.ceil(7);
+        let max = Math.floor(1);
+        let dice = Math.floor(Math.random() * (max - min) + min);
+        return dice;
+    }
+    peaceJump(idPeace) {
         let id = idPeace - 1;
-        let arrayStrings = string.split("-");
+        let arrayStrings = this.allPeaces[id].beforePosition.split("-");
+        console.log(arrayStrings);
         let x = Number(arrayStrings[1]);
         let y = Number(arrayStrings[2]);
-        let coordenada = "id" + "-" + x + "-" + y;
+        let range = this.rollDice();
+        console.log(range);
+        document.addEventListener("keyup", function (e) {
+            if (range > 1) {
+                if (e.key === "ArrowDown") {
+                    range -= 1;
+                    y -= 1;
+                    this.walkPeace(id, x, y);
+                }
+                else if (e.key === "ArrowUp") {
+                }
+                else if (e.key === "ArrowLeft") {
+                }
+                else if (e.key === "ArrowRight") {
+                }
+            }
+        });
+    }
+    walkPeace(id, pX, pY) {
+        let coordenada = "id" + "-" + pX + "-" + pY;
+        console.log(coordenada);
         if (coordenada == this.allPeaces[id].beforePosition) {
             console.log("msm posicao");
         }
-        else if (x < 51 && y < 33) {
+        else if (pX < this.limitMapX && pY < this.limitMapY) {
             this.movePeace(id, coordenada);
         }
         else {
@@ -94,5 +119,3 @@ class Game {
 const game = new Game(8);
 game.onInit();
 game.setUpPosition();
-game.walkPeace(2, "id-15-15");
-game.walkPeace(2, "id-15-15");
