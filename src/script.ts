@@ -1,7 +1,8 @@
 class Game {
   limitMapX: number = 51;
   limitMapY: number = 33;
-  allPeaces: object[] = [];
+  allPeaces: Object[] | any = [];
+  // ajustar depois
   numberPlayers: number;
   constructor(numberPlayers: number) {
     this.numberPlayers = numberPlayers;
@@ -124,13 +125,15 @@ class Game {
     this.movePeace(7, this.allPeaces[7].initialPosition);
   }
 
-  movePeace(id, coordenada) {
-    let move = document.querySelector(`#${coordenada}`);
+  movePeace(id: number, coordenada: string) {
+    let move = document.querySelector(`#${coordenada}`) as HTMLElement;
 
     let beforePosition = this.allPeaces[id].beforePosition;
 
     if (beforePosition !== "") {
-      let moveBefore = document.querySelector(`#${beforePosition}`);
+      let moveBefore = document.querySelector(
+        `#${beforePosition}`
+      ) as HTMLElement;
       moveBefore.innerHTML = `<img src="../img/azulejo.png">`;
     }
 
@@ -138,7 +141,9 @@ class Game {
       move.innerHTML = this.allPeaces[id].image;
       console.log("foi");
     } else {
-      let moveBefore = document.querySelector(`#${beforePosition}`);
+      let moveBefore = document.querySelector(
+        `#${beforePosition}`
+      ) as HTMLElement;
       moveBefore.innerHTML = this.allPeaces[id].image;
       console.log("tem gente");
     }
@@ -153,7 +158,7 @@ class Game {
     return dice;
   }
 
-  peaceJump(idPeace) {
+  peaceJump(idPeace: number) {
     let id = idPeace - 1;
 
     let arrayStrings = this.allPeaces[id].beforePosition.split("-");
@@ -178,15 +183,15 @@ class Game {
     });
   }
 
-  walkPeace(id, pX, pY) {
-    let coordenada = "id" + "-" + pX + "-" + pY;
-    console.log(coordenada);
-    if (coordenada == this.allPeaces[id].beforePosition) {
-      console.log("msm posicao");
-    } else if (pX < this.limitMapX && pY < this.limitMapY) {
-      this.movePeace(id, coordenada);
-    } else {
-      console.log("código errado");
+  walkPeace(id: number, pX: number, pY: number) {
+  let coordenada = "id" + "-" + pX + "-" + pY;
+  console.log(coordenada);
+  if (coordenada == this.allPeaces[id].beforePosition) {
+    console.log("msm posicao");
+  } else if (pX < this.limitMapX && pY < this.limitMapY) {
+    this.movePeace(id, coordenada);
+  } else {
+    console.log("código errado");
     }
   }
 }
